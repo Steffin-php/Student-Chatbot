@@ -1,4 +1,6 @@
 🎓 Student Chatbot: The Personal AI Academic Tutor
+
+
 Master Your Subjects, Don’t Just Finish Them.
 Student Chatbot is a next-generation pedagogical AI designed specifically for school and college students. Unlike general-purpose LLMs, 
 this chatbot is engineered to act as a personal tutor, focusing on "first-principles" learning. Whether you are stuck on a complex calculus problem, 
@@ -21,9 +23,12 @@ The bot is powered by a custom-tuned Gemini 3 Flash engine with system instructi
 Analogical Reasoning: Explaining abstract concepts (like Quantum Physics or Macroeconomics) using everyday analogies.
 Logical Breakdowns: Step-by-step guidance that builds from basic foundations to complex applications.
 Anti-Cheating Safeguards: Designed to foster understanding, it provides the logic and structure but encourages students to reach the final conclusion themselves.
+
 📂 Smart Session Management
+
 Persistent History: All chats are saved to local storage, allowing students to return to their study sessions even after a refresh.
 Context Awareness: The AI remembers the context of the conversation, maintaining a coherent "tutoring session" feel.
+
 🎨 Design & UI/UX
 
 The application follows a "Black Glass" (Glassmorphism) aesthetic, designed to be both high-tech and distraction-free:
@@ -31,6 +36,7 @@ Vibrant Visuals: A high-contrast blue-to-green liquid gradient background.
 Glassmorphic Interface: Semi-transparent panels with 20px Gaussian blurs and subtle white borders.
 Animated Interactions: Smooth CSS transitions, "thinking" animations for the AI, and slide-in entry effects for chat bubbles.
 Responsive Layout: Fully optimized for desktops, tablets, and mobile devices with a slide-out navigation drawer.
+
 🛠 Tech Stack & Tools
 
 This project is built using modern, industry-standard technologies to ensure high performance and maintainability.
@@ -44,6 +50,7 @@ AI & Logic
 Google Gemini API (@google/genai): Leverages the gemini-3-flash-preview model for low-latency, high-intelligence responses.
 Vite: A lightning-fast build tool and development server.
 Lucide React: A beautiful, consistent icon library for an intuitive user interface.
+
 🏗 System Architecture
 
 Frontend: React Single Page Application (SPA).
