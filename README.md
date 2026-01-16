@@ -1,5 +1,7 @@
 🎓 Student Chatbot: The Personal AI Academic Tutor
 
+ https://student-chatbot-seven.vercel.app/
+
 
 Master Your Subjects, Don’t Just Finish Them.
 Student Chatbot is a next-generation pedagogical AI designed specifically for school and college students. Unlike general-purpose LLMs, 
