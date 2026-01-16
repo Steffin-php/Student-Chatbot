@@ -17,16 +17,22 @@ const App: React.FC = () => {
       const savedSessions = localStorage.getItem('student_chatbot_sessions');
       
       if (savedUser) {
-        setUser(JSON.parse(savedUser));
-        setCurrentPage('chat');
+        const parsedUser = JSON.parse(savedUser);
+        if (parsedUser && parsedUser.name) {
+          setUser(parsedUser);
+          setCurrentPage('chat');
+        } else {
+          localStorage.removeItem('student_chatbot_user');
+        }
       }
+      
       if (savedSessions) {
         setSessions(JSON.parse(savedSessions));
       }
     } catch (e) {
       console.error("Failed to load user session", e);
-      localStorage.removeItem('student_chatbot_user');
-      localStorage.removeItem('student_chatbot_sessions');
+      localStorage.clear();
+      setCurrentPage('landing');
     }
   }, []);
 
@@ -90,4 +96,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App
+export default App;
