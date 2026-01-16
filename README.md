@@ -18,3 +18,4 @@ View your app in AI Studio: https://ai.studio/apps/drive/1BHA5slqOzU4ckF-7MkQsf-
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+Website:https://student-chatbot-knrkjh1np-steffin-phps-projects.vercel.app/
