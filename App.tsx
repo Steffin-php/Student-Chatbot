@@ -18,7 +18,7 @@ const App: React.FC = () => {
       
       if (savedUser) {
         const parsedUser = JSON.parse(savedUser);
-        if (parsedUser && parsedUser.name) {
+        if (parsedUser && parsedUser.id && parsedUser.name) {
           setUser(parsedUser);
           setCurrentPage('chat');
         } else {
@@ -30,7 +30,7 @@ const App: React.FC = () => {
         setSessions(JSON.parse(savedSessions));
       }
     } catch (e) {
-      console.error("Failed to load user session", e);
+      console.error("Critical State Load Error:", e);
       localStorage.clear();
       setCurrentPage('landing');
     }
@@ -44,6 +44,7 @@ const App: React.FC = () => {
 
   const handleLogout = () => {
     setUser(null);
+    setSessions([]);
     localStorage.removeItem('student_chatbot_user');
     setCurrentPage('landing');
   };
@@ -57,14 +58,14 @@ const App: React.FC = () => {
     const guestUser: User = {
       id: 'guest-' + Date.now(),
       name: 'Guest Learner',
-      email: 'guest@example.com',
+      email: 'guest@studentbot.edu',
       role: 'guest'
     };
     handleLogin(guestUser);
   };
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-transparent transition-opacity duration-500">
       {currentPage === 'landing' && (
         <LandingPage 
           onNavigateAuth={navigateToAuth} 
