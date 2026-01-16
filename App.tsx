@@ -11,7 +11,6 @@ const App: React.FC = () => {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [sessions, setSessions] = useState<ChatSession[]>([]);
 
-  // Load state from local storage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem('student_chatbot_user');
     const savedSessions = localStorage.getItem('student_chatbot_sessions');
@@ -25,7 +24,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Save sessions to local storage whenever they change
   useEffect(() => {
     localStorage.setItem('student_chatbot_sessions', JSON.stringify(sessions));
   }, [sessions]);
@@ -58,32 +56,43 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
-      {currentPage === 'landing' && (
-        <LandingPage 
-          onNavigateAuth={navigateToAuth} 
-          onTryForFree={handleTryForFree} 
-        />
-      )}
+    <div className="relative min-h-screen text-white selection:bg-emerald-500/30">
+      {/* Persistent Blue-Green Gradient Background */}
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(135deg, #1e40af 0%, #065f46 100%)',
+        }}
+      />
       
-      {currentPage === 'auth' && (
-        <AuthPage 
-          initialMode={authMode} 
-          onSuccess={handleLogin} 
-          onBack={() => setCurrentPage('landing')} 
-        />
-      )}
-      
-      {currentPage === 'chat' && user && (
-        <ChatInterface 
-          user={user} 
-          onLogout={handleLogout}
-          sessions={sessions}
-          setSessions={setSessions}
-        />
-      )}
+      {/* Content Layer */}
+      <div className="relative z-10 min-h-screen bg-black/10">
+        {currentPage === 'landing' && (
+          <LandingPage 
+            onNavigateAuth={navigateToAuth} 
+            onTryForFree={handleTryForFree} 
+          />
+        )}
+        
+        {currentPage === 'auth' && (
+          <AuthPage 
+            initialMode={authMode} 
+            onSuccess={handleLogin} 
+            onBack={() => setCurrentPage('landing')} 
+          />
+        )}
+        
+        {currentPage === 'chat' && user && (
+          <ChatInterface 
+            user={user} 
+            onLogout={handleLogout}
+            sessions={sessions}
+            setSessions={setSessions}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
-export default App;
+export default App
