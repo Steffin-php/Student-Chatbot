@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
@@ -11,15 +12,21 @@ const App: React.FC = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('student_chatbot_user');
-    const savedSessions = localStorage.getItem('student_chatbot_sessions');
-    
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setCurrentPage('chat');
-    }
-    if (savedSessions) {
-      setSessions(JSON.parse(savedSessions));
+    try {
+      const savedUser = localStorage.getItem('student_chatbot_user');
+      const savedSessions = localStorage.getItem('student_chatbot_sessions');
+      
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+        setCurrentPage('chat');
+      }
+      if (savedSessions) {
+        setSessions(JSON.parse(savedSessions));
+      }
+    } catch (e) {
+      console.error("Failed to load user session", e);
+      localStorage.removeItem('student_chatbot_user');
+      localStorage.removeItem('student_chatbot_sessions');
     }
   }, []);
 
@@ -73,8 +80,9 @@ const App: React.FC = () => {
           onLogout={handleLogout}
           sessions={sessions}
           setSessions={(s) => {
-            setSessions(s);
-            localStorage.setItem('student_chatbot_sessions', JSON.stringify(s));
+            const newSessions = typeof s === 'function' ? s(sessions) : s;
+            setSessions(newSessions);
+            localStorage.setItem('student_chatbot_sessions', JSON.stringify(newSessions));
           }}
         />
       )}
@@ -82,4 +90,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default App
