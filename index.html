@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +16,7 @@
       color: #ffffff;
       margin: 0;
       min-height: 100vh;
+      overflow-x: hidden;
     }
     #root {
       min-height: 100vh;
@@ -24,15 +24,18 @@
     .black-glass {
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .chat-bubble-user {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
     }
     .chat-bubble-bot {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.95);
     }
     ::-webkit-scrollbar {
       width: 6px;
