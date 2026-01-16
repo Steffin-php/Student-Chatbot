@@ -11,7 +11,6 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      /* Vibrant Green and Blue mix background */
       background: linear-gradient(135deg, #1e40af 0%, #065f46 50%, #10b981 100%);
       background-attachment: fixed;
       color: #ffffff;
@@ -22,9 +21,17 @@
       min-height: 100vh;
     }
     .black-glass {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .chat-bubble-user {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .chat-bubble-bot {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     ::-webkit-scrollbar {
       width: 6px;
