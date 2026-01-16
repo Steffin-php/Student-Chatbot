@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
@@ -23,10 +22,6 @@ const App: React.FC = () => {
       setSessions(JSON.parse(savedSessions));
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('student_chatbot_sessions', JSON.stringify(sessions));
-  }, [sessions]);
 
   const handleLogin = (userData: User) => {
     setUser(userData);
@@ -56,43 +51,35 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-emerald-500/30">
-      {/* Persistent Blue-Green Gradient Background */}
-      <div 
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(135deg, #1e40af 0%, #065f46 100%)',
-        }}
-      />
+    <div className="min-h-screen bg-transparent">
+      {currentPage === 'landing' && (
+        <LandingPage 
+          onNavigateAuth={navigateToAuth} 
+          onTryForFree={handleTryForFree} 
+        />
+      )}
       
-      {/* Content Layer */}
-      <div className="relative z-10 min-h-screen bg-black/10">
-        {currentPage === 'landing' && (
-          <LandingPage 
-            onNavigateAuth={navigateToAuth} 
-            onTryForFree={handleTryForFree} 
-          />
-        )}
-        
-        {currentPage === 'auth' && (
-          <AuthPage 
-            initialMode={authMode} 
-            onSuccess={handleLogin} 
-            onBack={() => setCurrentPage('landing')} 
-          />
-        )}
-        
-        {currentPage === 'chat' && user && (
-          <ChatInterface 
-            user={user} 
-            onLogout={handleLogout}
-            sessions={sessions}
-            setSessions={setSessions}
-          />
-        )}
-      </div>
+      {currentPage === 'auth' && (
+        <AuthPage 
+          initialMode={authMode} 
+          onSuccess={handleLogin} 
+          onBack={() => setCurrentPage('landing')} 
+        />
+      )}
+      
+      {currentPage === 'chat' && user && (
+        <ChatInterface 
+          user={user} 
+          onLogout={handleLogout}
+          sessions={sessions}
+          setSessions={(s) => {
+            setSessions(s);
+            localStorage.setItem('student_chatbot_sessions', JSON.stringify(s));
+          }}
+        />
+      )}
     </div>
   );
 };
 
-export default App
+export default App;
