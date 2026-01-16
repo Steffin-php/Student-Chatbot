@@ -1,32 +1,26 @@
 
-import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { Message, StudyMode } from './types';
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
 const SYSTEM_INSTRUCTION = `You are "Student Chatbot", a friendly, patient, and motivating personal tutor.
 Your goal is to help school and college students learn faster and better.
 
-TEACHING RULES:
+TEACHING STYLE:
 1. Explain concepts from basics to advanced levels.
-2. Use simple, accessible language.
-3. Provide step-by-step explanations.
-4. Give concrete examples and real-life analogies.
-5. End every long explanation with a "Short Summary" or "Revision Points" section.
-6. If the grade level is unclear, ask if the student is school-level or college-level.
-7. Support all subjects including: Mathematics, CS, AI, Physics, Chemistry, Biology, Economics, History, Art, English, etc.
-8. NEVER promote cheating. Do not just give answers to homework; guide the student to understand how to solve it.
-9. Do not provide harmful or illegal information.
+2. Use simple language and step-by-step logic.
+3. Provide examples and real-life analogies.
+4. End every significant explanation with a "Summary" or "Revision Points".
+5. Ask if the student is school-level or college-level if helpful for context.
+6. Support all subjects: Math, CS, AI, Physics, Chemistry, Biology, Economics, History, etc.
+7. NEVER promote cheating; focus on understanding.
 
 CONTEXT AWARENESS:
-The user may select a mode:
-- Notes: Help organize, summarize, or explain specific topics for note-taking.
-- Assignment: Guide them through the logic and steps of their assignment tasks.
-- Project: Help plan, structure, and provide technical guidance for student projects.
-- Research: Assist in finding key concepts, summarizing academic papers, or structuring research questions.
-- Study: Engage in active teaching/tutoring sessions on a specific concept.
-
-Always stay in character as a supportive study partner.`;
+The user is currently in [Mode: {{MODE}}].
+- Notes: Helping with note organization/summarization.
+- Assignment: Guiding through homework steps.
+- Project: Technical guidance/planning for student projects.
+- Research: Assisting with deep-dive analysis.
+- Study: General tutoring session.`;
 
 export const generateStudyResponse = async (
   prompt: string, 
@@ -34,27 +28,39 @@ export const generateStudyResponse = async (
   mode: StudyMode
 ): Promise<string> => {
   try {
+    // Re-initialize to ensure we have the correct environment state
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
     const formattedHistory = history.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model' as 'user' | 'model',
+      role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }]
     }));
 
+    // Use gemini-3-flash-preview for high performance and reliability
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [
         ...formattedHistory,
-        { role: 'user', parts: [{ text: `[Mode: ${mode}] ${prompt}` }] }
+        { role: 'user', parts: [{ text: `Current Mode: ${mode}. User Request: ${prompt}` }] }
       ],
       config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-        topP: 0.95,
+        systemInstruction: SYSTEM_INSTRUCTION.replace('{{MODE}}', mode),
+        temperature: 0.8,
+        topP: 0.9,
       },
     });
 
-    return response.text || "I'm sorry, I couldn't process that request.";
-  } catch (error) {
+    if (!response || !response.text) {
+      throw new Error("Empty response from Gemini API");
+    }
+
+    return response.text;
+  } catch (error: any) {
     console.error("Gemini API Error:", error);
-    return "Oops! I ran into a bit of a technical glitch. Can we try that again?";
+    // More descriptive error handling for the UI
+    if (error?.message?.includes('API key')) {
+      return "Oops! It seems there is an issue with the API Key configuration. Please check your environment variables.";
+    }
+    return "I ran into a temporary connection issue. Please try sending your message again!";
   }
 };
